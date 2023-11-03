@@ -1,1 +1,1 @@
-dotnet build bridge.csproj && steam-run godot4
+./build && steam-run godot4

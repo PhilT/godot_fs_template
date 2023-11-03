@@ -1,6 +1,14 @@
 module Fs.Main
 open Godot
 
+type RigidBody3DFs() =
+  inherit RigidBody3D()
+  override x._InputEvent(camera: Camera3D, event: InputEvent, position: Vector3, normal: Vector3, shapeIdx: int) =
+    match event with
+    | :? InputEventMouseButton -> GD.Print("Mouse button detected!")
+    | _ -> GD.Print("Some other event")
+
+
 let ready (main: Node3D) =
   let camera = new Camera3D()
   camera.Position <- Vector3(0f, 3f, 52f)
@@ -10,8 +18,12 @@ let ready (main: Node3D) =
 
   let floor = new MeshInstance3D()
   let planeMesh = new PlaneMesh()
+  let body = new RigidBody3DFs()
+  let shape = new CollisionShape3D()
+  shape.Shape <- new ConcavePolygonShape3D()
   planeMesh.Size <- Vector2(100f, 100f)
   floor.Mesh <- planeMesh
+  floor.AddChild(shape)
   main.AddChild(floor)
 
   let sun = new DirectionalLight3D()
@@ -29,3 +41,4 @@ let ready (main: Node3D) =
 
 let run (main: Node3D) delta =
   ()
+
